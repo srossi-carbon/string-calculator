@@ -22,7 +22,11 @@ public class StringCalculatorTest {
         assertEquals(5, calc.add("2,3"));
     }
 
-
+    @Test
+    public void testAddNumbersStringWithSpace() {
+        StringCalculator calc = new StringCalculator();
+        assertEquals(6, calc.add("1, 2, 3"));
+    }
 
     @Test
     public void testAddNoneNumberString() {
