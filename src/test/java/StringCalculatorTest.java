@@ -37,7 +37,13 @@ public class StringCalculatorTest {
     @Test
     public void testAddNoneNumberString() {
         StringCalculator calc = new StringCalculator();
-       assertThrows(IllegalArgumentException.class, () -> calc.add("a,b"));
+        assertThrows(IllegalArgumentException.class, () -> calc.add("a,b"));
+    }
+
+    @Test
+    public void testAddNumberStringWithBackslashN() {
+        StringCalculator calc = new StringCalculator();
+        assertEquals(15, calc.add("1\n2,3"));
     }
 
 
