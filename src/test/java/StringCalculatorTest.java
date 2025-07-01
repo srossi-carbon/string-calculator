@@ -29,6 +29,12 @@ public class StringCalculatorTest {
     }
 
     @Test
+    public void testAddManyNumbersWithSpace() {
+        StringCalculator calc = new StringCalculator();
+        assertEquals(15, calc.add("1,2,3,4,5"));
+    }
+
+    @Test
     public void testAddNoneNumberString() {
         StringCalculator calc = new StringCalculator();
        assertThrows(IllegalArgumentException.class, () -> calc.add("a,b"));
