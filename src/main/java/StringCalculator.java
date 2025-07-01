@@ -7,8 +7,6 @@ public class StringCalculator {
 
         String[] elementsToSum = input.split(",");
 
-        System.out.println(elementsToSum);
-
         for (String s : elementsToSum) {
             int number = Integer.parseInt(s.trim());
             sum += number;
