@@ -64,10 +64,20 @@ public class StringCalculatorTest {
     }
 
     @Test
+    public void testAddNumberStringWithOneNegativeNumber() {
+        StringCalculator calc = new StringCalculator();
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () ->  calc.add("2,-10,9"));
+
+        assertEquals("Les nombres négatifs ne sont pas autorisés", exception.getMessage());
+    }
+
+    @Test
     public void testAddNumberStringWithBigNumbers() {
         StringCalculator calc = new StringCalculator();
         assertEquals(15, calc.add("5,10,1664"));
     }
-
 
 }
