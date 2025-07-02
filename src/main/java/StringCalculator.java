@@ -1,12 +1,10 @@
 import java.util.Arrays;
 import java.util.regex.*;
-import java.util.stream.Collectors;
 
 public class StringCalculator {
 
     private static final int MAX_INT_VALUE = 1000;
     private static final String DEFAULT_DELIMITERS = ",\n";
-
 
     public static int add(String input) {
         if (input.isEmpty()) {return 0;}
@@ -14,49 +12,52 @@ public class StringCalculator {
         String delimiters = DEFAULT_DELIMITERS;
         String calculatorStr = input;
 
+        DelimiterParsingResult parsingResult = parseCustomDelimiter(input);
+
+        if (parsingResult != null) {
+            delimiters = DEFAULT_DELIMITERS + parsingResult.delimiter();
+            calculatorStr = parsingResult.remainingString();
+        }
+
+        int [] elementsToSum = parseIntegers(calculatorStr, delimiters);
+
+        int [] negativeNumbers = findNegativeNumbers(elementsToSum);
+
+        if (negativeNumbers.length > 0) {
+            throw new NegativeNumberException(negativeNumbers);
+        }
+
+        return sumNumbersUnderMaxValue(elementsToSum);
+    }
+
+
+    private static Integer sumNumbersUnderMaxValue(int [] values) {
+        return Arrays.stream(values).filter(value -> value <= MAX_INT_VALUE).sum();
+    };
+
+    private static int [] parseIntegers(String input, String delimiters) {
+        return Arrays.stream(input.split("[" + delimiters + "]"))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .mapToInt(Integer::parseInt)
+                .toArray();
+    };
+
+    private static int [] findNegativeNumbers(int[] values) {
+        return Arrays.stream(values).filter(element -> element < 0).toArray();
+    }
+
+    private record DelimiterParsingResult(String delimiter, String remainingString) {}
+
+    private static DelimiterParsingResult parseCustomDelimiter(String input) {
         Pattern pattern = Pattern.compile("^//(.)\\n(.*)", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(input);
 
         if (matcher.matches()) {
-            String specialDelimiter = matcher.group(1);
-            calculatorStr = matcher.group(2);
-            delimiters = DEFAULT_DELIMITERS + specialDelimiter;
+            return new DelimiterParsingResult(matcher.group(1), matcher.group(2));
         }
-
-        int[] elementsToSum = Arrays.stream(calculatorStr.split("[" + delimiters + "]"))
-                .map(String::trim)
-                .mapToInt(Integer::parseInt)
-                .toArray();
-
-        int [] negativeNumbers = Arrays.stream(elementsToSum).filter(element -> element < 0).toArray();
-
-        if (negativeNumbers.length > 0) {
-             String negativeNumberErrorMessage = "Les nombres négatifs ne sont pas autorisés";
-             if (negativeNumbers.length > 1) {
-                 negativeNumberErrorMessage += " : " + Arrays.stream(negativeNumbers)
-                         .mapToObj(String::valueOf)
-                         .collect(Collectors.joining(", "));
-             }
-            throw new IllegalArgumentException(negativeNumberErrorMessage);
-
-        }
-
-
-        return sumNumberUnderMaxValue(elementsToSum);
+        return null;
     }
-
-
-    private static Integer sumNumberUnderMaxValue(int [] values) {
-        int sum = 0;
-
-        for (Integer element : values) {
-            if (element <= StringCalculator.MAX_INT_VALUE) {
-                sum += element;
-            }
-        }
-        return sum;
-    };
-
 
     public static void main(String[] args) {
         String input = "2,3";
@@ -65,3 +66,4 @@ public class StringCalculator {
         System.out.println("Somme = " + sum);
     }
 }
+
