@@ -1,4 +1,6 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.*;
 import java.util.stream.Collectors;
 
@@ -21,24 +23,20 @@ public class StringCalculator {
             delimitersRegex = "[,\n" + specialDelimiter + "]";
         }
 
-        String[] elementsToSum = calculatorStr.split(delimitersRegex);
-        ArrayList<Integer> negativeNumbers = new ArrayList<>();
-        for (String s : elementsToSum) {
-            int number = Integer.parseInt(s.trim());
-            if (number < 0) {
-                negativeNumbers.add(number);
-            }
-            sum += number;
+        int[] elementsToSum = Arrays.stream(calculatorStr.split(delimitersRegex))
+                .map(String::trim)
+                .mapToInt(Integer::parseInt)
+                .toArray();
+
+        int [] negativeNumbers = Arrays.stream(elementsToSum).filter(element -> element < 0).toArray();
+        if (negativeNumbers.length > 0) {
+            throw new IllegalArgumentException("Les nombres négatifs ne sont pas autorisés : " +
+                    Arrays.stream(negativeNumbers)
+                            .mapToObj(String::valueOf)
+                            .collect(Collectors.joining(", ")));
         }
-
-        if (!negativeNumbers.isEmpty()) {
-            String negativeNumbersStr =
-                    negativeNumbers
-                            .stream()
-                            .map(String::valueOf)
-                            .collect(Collectors.joining(", "));
-
-            throw new IllegalArgumentException("Les nombres négatifs ne sont pas autorisés : " + negativeNumbersStr);
+        for (Integer element : elementsToSum) {
+            sum += element;
         }
 
         return sum;
