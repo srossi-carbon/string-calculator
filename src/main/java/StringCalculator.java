@@ -1,3 +1,5 @@
+import java.util.regex.*;
+
 public class StringCalculator {
 
     public static int add(String input) {
@@ -5,7 +7,19 @@ public class StringCalculator {
 
         if (input.isEmpty()) {return sum;}
 
-        String[] elementsToSum = input.split("[,\n]");
+        String delimitersRegex = "[,\n]";
+        String calculatorStr = input;
+
+        Pattern pattern = Pattern.compile("^//(.)\\n(.*)", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(input);
+
+        if (matcher.matches()) {
+            String specialDelimiter = matcher.group(1);
+            calculatorStr = matcher.group(2);
+            delimitersRegex = "[,\n" + specialDelimiter + "]";
+        }
+
+        String[] elementsToSum = calculatorStr.split(delimitersRegex);
 
         for (String s : elementsToSum) {
             int number = Integer.parseInt(s.trim());

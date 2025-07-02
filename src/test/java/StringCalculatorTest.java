@@ -49,7 +49,7 @@ public class StringCalculatorTest {
     @Test
     public void testAddNumberStringWithSpecialDelimiter() {
         StringCalculator calc = new StringCalculator();
-        assertEquals(6, calc.add("//;\\n1,2;3"));
+        assertEquals(6, calc.add("//;\n1,2;3"));
     }
 
 
