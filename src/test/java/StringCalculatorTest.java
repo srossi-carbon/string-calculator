@@ -56,8 +56,8 @@ public class StringCalculatorTest {
     public void testAddNumberStringWithNegativeNumbers() {
         StringCalculator calc = new StringCalculator();
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        NegativeNumberException exception = assertThrows(
+                NegativeNumberException.class,
                 () ->  calc.add("-5,2,-10,9"));
 
         assertEquals("Les nombres négatifs ne sont pas autorisés : -5, -10", exception.getMessage());
@@ -67,8 +67,8 @@ public class StringCalculatorTest {
     public void testAddNumberStringWithOneNegativeNumber() {
         StringCalculator calc = new StringCalculator();
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
+        NegativeNumberException exception = assertThrows(
+                NegativeNumberException.class,
                 () ->  calc.add("2,-10,9"));
 
         assertEquals("Les nombres négatifs ne sont pas autorisés", exception.getMessage());
