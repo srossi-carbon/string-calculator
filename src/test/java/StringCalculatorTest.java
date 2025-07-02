@@ -52,5 +52,16 @@ public class StringCalculatorTest {
         assertEquals(6, calc.add("//;\n1,2;3"));
     }
 
+    @Test
+    public void testAddNumberStringWithNegativeNumbers() {
+        StringCalculator calc = new StringCalculator();
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () ->  calc.add("-5,2,-10,9"));
+
+        assertEquals("Les nombres négatifs ne sont pas autorisés : -5, -10", exception.getMessage());
+    }
+
 
 }
