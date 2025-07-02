@@ -43,7 +43,7 @@ public class StringCalculatorTest {
     @Test
     public void testAddNumberStringWithBackslashN() {
         StringCalculator calc = new StringCalculator();
-        assertEquals(15, calc.add("1\n2,3"));
+        assertEquals(6, calc.add("1\n2,3"));
     }
 
 
