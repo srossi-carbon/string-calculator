@@ -63,5 +63,11 @@ public class StringCalculatorTest {
         assertEquals("Les nombres négatifs ne sont pas autorisés : -5, -10", exception.getMessage());
     }
 
+    @Test
+    public void testAddNumberStringWithBigNumbers() {
+        StringCalculator calc = new StringCalculator();
+        assertEquals(15, calc.add("5,10,1664"));
+    }
+
 
 }
