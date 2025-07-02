@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.regex.*;
+import java.util.stream.Collectors;
 
 public class StringCalculator {
 
@@ -20,10 +22,23 @@ public class StringCalculator {
         }
 
         String[] elementsToSum = calculatorStr.split(delimitersRegex);
-
+        ArrayList<Integer> negativeNumbers = new ArrayList<>();
         for (String s : elementsToSum) {
             int number = Integer.parseInt(s.trim());
+            if (number < 0) {
+                negativeNumbers.add(number);
+            }
             sum += number;
+        }
+
+        if (!negativeNumbers.isEmpty()) {
+            String negativeNumbersStr =
+                    negativeNumbers
+                            .stream()
+                            .map(String::valueOf)
+                            .collect(Collectors.joining(", "));
+
+            throw new IllegalArgumentException("Les nombres négatifs ne sont pas autorisés : " + negativeNumbersStr);
         }
 
         return sum;
