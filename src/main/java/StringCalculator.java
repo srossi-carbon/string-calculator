@@ -36,7 +36,9 @@ public class StringCalculator {
                             .collect(Collectors.joining(", ")));
         }
         for (Integer element : elementsToSum) {
-            sum += element;
+            if (element <= 1000) {
+                sum += element;
+            }
         }
 
         return sum;
