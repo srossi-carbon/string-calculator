@@ -1,0 +1,83 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
+
+public class StringCalculatorTest {
+    @Test
+    public void testAddEmptyString() {
+        StringCalculator calc = new StringCalculator();
+        assertEquals(0, calc.add(""));
+    }
+
+    @Test
+    public void testAddOneNumberString() {
+        StringCalculator calc = new StringCalculator();
+        assertEquals(1, calc.add("1"));
+    }
+
+    @Test
+    public void testAddTwoNumbersString() {
+        StringCalculator calc = new StringCalculator();
+        assertEquals(5, calc.add("2,3"));
+    }
+
+    @Test
+    public void testAddNumbersStringWithSpace() {
+        StringCalculator calc = new StringCalculator();
+        assertEquals(6, calc.add("1, 2, 3"));
+    }
+
+    @Test
+    public void testAddManyNumbersWithSpace() {
+        StringCalculator calc = new StringCalculator();
+        assertEquals(15, calc.add("1,2,3,4,5"));
+    }
+
+    @Test
+    public void testAddNoneNumberString() {
+        StringCalculator calc = new StringCalculator();
+        assertThrows(IllegalArgumentException.class, () -> calc.add("a,b"));
+    }
+
+    @Test
+    public void testAddNumberStringWithBackslashN() {
+        StringCalculator calc = new StringCalculator();
+        assertEquals(6, calc.add("1\n2,3"));
+    }
+
+    @Test
+    public void testAddNumberStringWithSpecialDelimiter() {
+        StringCalculator calc = new StringCalculator();
+        assertEquals(6, calc.add("//;\n1,2;3"));
+    }
+
+    @Test
+    public void testAddNumberStringWithNegativeNumbers() {
+        StringCalculator calc = new StringCalculator();
+
+        NegativeNumberException exception = assertThrows(
+                NegativeNumberException.class,
+                () ->  calc.add("-5,2,-10,9"));
+
+        assertEquals("Les nombres négatifs ne sont pas autorisés : -5, -10", exception.getMessage());
+    }
+
+    @Test
+    public void testAddNumberStringWithOneNegativeNumber() {
+        StringCalculator calc = new StringCalculator();
+
+        NegativeNumberException exception = assertThrows(
+                NegativeNumberException.class,
+                () ->  calc.add("2,-10,9"));
+
+        assertEquals("Les nombres négatifs ne sont pas autorisés", exception.getMessage());
+    }
+
+    @Test
+    public void testAddNumberStringWithBigNumbers() {
+        StringCalculator calc = new StringCalculator();
+        assertEquals(15, calc.add("5,10,1664"));
+    }
+
+}
